@@ -13,7 +13,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
     var refreshControl: UIRefreshControl!
     
-    var photos: [NSDictionary]! = [NSDictionary]()
+    var photos: [Photo]! = [Photo]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,10 +45,9 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         var cell = tableView.dequeueReusableCellWithIdentifier("PhotoCell") as PhotoCell
         
         var photo = photos[indexPath.section]
-        var url = photo.valueForKeyPath("images.standard_resolution.url") as String
         
         cell.photoView.image = nil;
-        cell.photoView.setImageWithURL(NSURL(string: url)!)
+        cell.photoView.setImageWithURL(photo.standardResolutionURL)
         
         return cell;
     }
@@ -58,20 +57,17 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         headerView.backgroundColor = UIColor(white: 1, alpha: 0.9)
             
         var photo = photos[section]
-        var user = photo["user"] as NSDictionary
-        var username = user["username"] as String
-        var profileUrl = NSURL(string: user["profile_picture"] as String)
         
         var profileView = UIImageView(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
         profileView.clipsToBounds = true
         profileView.layer.cornerRadius = 15;
         profileView.layer.borderColor = UIColor(white: 0.7, alpha: 0.8).CGColor
         profileView.layer.borderWidth = 1;
-        profileView.setImageWithURL(profileUrl)
+        profileView.setImageWithURL(photo.user.profilePictureUrl)
         headerView.addSubview(profileView)
         
         var usernameLabel = UILabel(frame: CGRect(x: 50, y: 10, width: 250, height: 30))
-        usernameLabel.text = username;
+        usernameLabel.text = photo.user.username;
         usernameLabel.font = UIFont.boldSystemFontOfSize(16)
         usernameLabel.textColor = UIColor(red: 8/255.0, green: 64/255.0, blue: 127/255.0, alpha: 1)
         headerView.addSubview(usernameLabel)
@@ -88,7 +84,8 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         var request = NSURLRequest(URL: url)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
             var responseDictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
-            self.photos = responseDictionary["data"] as [NSDictionary]
+            var dictionaries = responseDictionary["data"] as [NSDictionary]
+            self.photos = Photo.photos(dictionaries)
             self.tableView.reloadData()
             self.refreshControl.endRefreshing()
         }

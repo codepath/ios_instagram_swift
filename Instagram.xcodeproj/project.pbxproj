@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		226173601AB787380073F195 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2261735F1AB787380073F195 /* Photo.swift */; };
+		226173631AB787FE0073F195 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226173621AB787FE0073F195 /* User.swift */; };
 		22E45B931AB7434E003FA1E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E45B921AB7434E003FA1E7 /* AppDelegate.swift */; };
 		22E45B981AB7434E003FA1E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22E45B961AB7434E003FA1E7 /* Main.storyboard */; };
 		22E45B9A1AB7434E003FA1E7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22E45B991AB7434E003FA1E7 /* Images.xcassets */; };
@@ -29,6 +31,8 @@
 
 /* Begin PBXFileReference section */
 		2261735C1AB748BC0073F195 /* Instagram-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Instagram-Bridging-Header.h"; sourceTree = "<group>"; };
+		2261735F1AB787380073F195 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		226173621AB787FE0073F195 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		22E45B8D1AB7434E003FA1E7 /* Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22E45B911AB7434E003FA1E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22E45B921AB7434E003FA1E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -64,6 +68,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		226173611AB7873D0073F195 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2261735F1AB787380073F195 /* Photo.swift */,
+				226173621AB787FE0073F195 /* User.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		22E45B841AB7434E003FA1E7 = {
 			isa = PBXGroup;
 			children = (
@@ -87,6 +100,7 @@
 		22E45B8F1AB7434E003FA1E7 /* Instagram */ = {
 			isa = PBXGroup;
 			children = (
+				226173611AB7873D0073F195 /* Models */,
 				22E45BB31AB74360003FA1E7 /* Views */,
 				22E45BB21AB74359003FA1E7 /* View Controllers */,
 				22E45B921AB7434E003FA1E7 /* AppDelegate.swift */,
@@ -292,8 +306,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				226173601AB787380073F195 /* Photo.swift in Sources */,
 				22E45BB71AB74378003FA1E7 /* PhotosViewController.swift in Sources */,
 				22E45BB51AB7436C003FA1E7 /* PhotoCell.swift in Sources */,
+				226173631AB787FE0073F195 /* User.swift in Sources */,
 				22E45B931AB7434E003FA1E7 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
