@@ -42,10 +42,10 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("PhotoCell") as PhotoCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("PhotoCell") as! PhotoCell
         
-        var photo = photos[indexPath.section]
-        var url = photo.valueForKeyPath("images.standard_resolution.url") as String
+        let photo = photos[indexPath.section]
+        let url = photo.valueForKeyPath("images.standard_resolution.url") as! String
         
         cell.photoView.image = nil;
         cell.photoView.setImageWithURL(NSURL(string: url)!)
@@ -54,15 +54,15 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        var headerView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
         headerView.backgroundColor = UIColor(white: 1, alpha: 0.9)
             
-        var photo = photos[section]
-        var user = photo["user"] as NSDictionary
-        var username = user["username"] as String
-        var profileUrl = NSURL(string: user["profile_picture"] as String)
+        let photo = photos[section]
+        let user = photo["user"] as! NSDictionary
+        let username = user["username"] as! String
+        let profileUrl = NSURL(string: user["profile_picture"] as! String)
         
-        var profileView = UIImageView(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
+        let profileView = UIImageView(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
         profileView.clipsToBounds = true
         profileView.layer.cornerRadius = 15;
         profileView.layer.borderColor = UIColor(white: 0.7, alpha: 0.8).CGColor
@@ -70,7 +70,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         profileView.setImageWithURL(profileUrl)
         headerView.addSubview(profileView)
         
-        var usernameLabel = UILabel(frame: CGRect(x: 50, y: 10, width: 250, height: 30))
+        let usernameLabel = UILabel(frame: CGRect(x: 50, y: 10, width: 250, height: 30))
         usernameLabel.text = username;
         usernameLabel.font = UIFont.boldSystemFontOfSize(16)
         usernameLabel.textColor = UIColor(red: 8/255.0, green: 64/255.0, blue: 127/255.0, alpha: 1)
@@ -84,13 +84,26 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func fetchData() {
-        var url = NSURL(string: "https://api.instagram.com/v1/users/self/feed?access_token=154086.14160aa.d1e79106ecba466aa862ab985105b25c")!
-        var request = NSURLRequest(URL: url)
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-            var responseDictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
-            self.photos = responseDictionary["data"] as [NSDictionary]
+        let url = NSURL(string: "https://api.instagram.com/v1/users/self/feed?access_token=154086.14160aa.d1e79106ecba466aa862ab985105b25c")!
+        let request = NSURLRequest(URL: url)
+        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
+            guard let data = data else {
+                print("Error got no data from request: \(request)")
+                if let error = error {
+                    print("Error was : \(error.localizedDescription)")
+                }
+                return
+            }
+            
+            do {
+            let responseDictionary = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! NSDictionary
+            self.photos = responseDictionary["data"] as! [NSDictionary]
+
             self.tableView.reloadData()
             self.refreshControl.endRefreshing()
+            } catch {
+                print("Errors were produced when parsing JSON to NSDictionary")
+            }
         }
     }
 
